@@ -10,9 +10,9 @@ public class ReviewDelete {
 	    
 		String username="";
 
-	      int userId=0;
-	      String title="";
-	      String sql_delete= "";
+	    int userId=0;
+	    String title="";
+	    String sql_delete= "";
 		
 	    PreparedStatement pstmt = null;
 		ResultSet myResSet = null;
