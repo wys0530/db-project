@@ -1,4 +1,6 @@
 package dbdbd.service;
+import java.util.Scanner;
+import java.sql.*;
 
 public class PivotAnalysis {
   public static void main(String[] args) {
