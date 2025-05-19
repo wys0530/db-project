@@ -1,5 +1,6 @@
 package dbdbd.service;
-
+import java.util.Scanner;
+import java.sql.*;
 public class UserScoreReset {
   	public static void main(String[] args) {
 		String userID="root";
