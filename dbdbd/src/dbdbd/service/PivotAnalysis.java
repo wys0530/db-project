@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class PivotAnalysis {
   public static void main(String[] args) {
-		String userID="root";
-		String userPW="ljjf1522";
+		String userID="DBDBDuser";
+		String userPW="DBDBDpw";
 		String dbName="dbdbd";
 		String header = "jdbc:mysql://localhost:3306/";
 		String encoding = "useUnicode=true&characterEncoding=UTF-8";
