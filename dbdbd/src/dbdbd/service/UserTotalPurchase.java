@@ -4,7 +4,14 @@ import java.sql.*;
 
 public class UserTotalPurchase {
 
-    public void run(Connection conn) {
+    public static void run() {
+        // DB 연결 정보
+        String url = "jdbc:mysql://localhost:3306/dbdbd?useUnicode=true&characterEncoding=UTF-8";
+        String user = "root";
+        String password = "*****"; // ← 본인 비밀번호로 수정
+
+        Connection conn = null;
+
         String sql = """
             SELECT u.username, 
                    SUM(p.purchase_price) AS total_spent
@@ -14,12 +21,10 @@ public class UserTotalPurchase {
             HAVING SUM(p.purchase_price) >= 100000;
         """;
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
         try {
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
+            conn = DriverManager.getConnection(url, user, password);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
 
             System.out.println("[10만 원 이상 구매한 유저 목록]");
             System.out.println("-------------------------------");
@@ -36,13 +41,17 @@ public class UserTotalPurchase {
                 System.out.println("조건에 맞는 유저가 없습니다.");
             }
 
+            rs.close();
+            pstmt.close();
         } catch (SQLException e) {
-            System.err.println("총 구매 금액 조회 중 오류 발생:");
+            System.err.println("조회 중 오류 발생:");
             e.printStackTrace();
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
+                if (conn != null) {
+                    conn.close();
+                    System.out.println("... Close Connection ...");
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
