@@ -19,7 +19,7 @@ public class UserScoreReset {
 		String sql_select="";
 		
 		try {
-			myConn=DriverManager.getConnection(url,userID,userPW);
+			
 			//1. 사용자 로그인
 			
 			System.out.print("당신의 user_id를 입력하세요 :");
@@ -30,7 +30,7 @@ public class UserScoreReset {
 					from users 
 					where user_id=?
 					""";
-			pstmt=myConn.prepareStatement(sqlFindID);
+			pstmt=conn.prepareStatement(sqlFindID);
 			pstmt.setInt(1, id);
 			myResSet=pstmt.executeQuery();
 			if(myResSet.next()) {
@@ -52,17 +52,17 @@ public class UserScoreReset {
 					inner join game g on ph.game_id = g.game_id
 					where ph.user_id=? and (ph.total_playtime<=1500 or ph.last_play<=date_sub(now(),interval 6 month))
 			""";
-			pstmt=myConn.prepareStatement(sql_select);
+			pstmt=conn.prepareStatement(sql_select);
 			pstmt.setInt(1, id);
 			myResSet=pstmt.executeQuery();
 			while(myResSet.next()) {
 				String title = myResSet.getString("title");
-                int playtime = myResSet.getInt("total_playtime");
-                Timestamp lastPlay = myResSet.getTimestamp("last_play");
-                int score = myResSet.getInt("user_score");
-
-                System.out.printf("제목: %s | 플레이타임: %d | 마지막 플레이: %s | 점수: %d%n",
-                        title, playtime, lastPlay, score);
+		                int playtime = myResSet.getInt("total_playtime");
+		                Timestamp lastPlay = myResSet.getTimestamp("last_play");
+		                int score = myResSet.getInt("user_score");
+		
+		                System.out.printf("제목: %s | 플레이타임: %d | 마지막 플레이: %s | 점수: %d%n",
+		                        title, playtime, lastPlay, score);
 			}
 			
 			//3. user_score를 초기화할 게임 선 >> title 기준
@@ -73,12 +73,12 @@ public class UserScoreReset {
 			sql_update="""
 					UPDATE play_history
 					SET user_score = 0
-                    WHERE user_id = ?
-                    AND game_id = (
-                    SELECT game_id FROM game WHERE title = ?)
+			                    WHERE user_id = ?
+			                    AND game_id = (
+			                    SELECT game_id FROM game WHERE title = ?)
 					
 					""";
-			PreparedStatement updatepstmt=myConn.prepareStatement(sql_update);
+			PreparedStatement updatepstmt=conn.prepareStatement(sql_update);
 			updatepstmt.setInt(1, id);
 			updatepstmt.setString(2, selectedT);
 			int a=updatepstmt.executeUpdate();
