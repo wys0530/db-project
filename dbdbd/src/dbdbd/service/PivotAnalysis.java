@@ -1,19 +1,14 @@
-package dbdbd.service;
+package dbdbd.service;   
 import java.util.Scanner;
 import java.sql.*;
 
 public class PivotAnalysis {
-  public static void main(String[] args) {
-		String userID="DBDBDuser";
-		String userPW="DBDBDpw";
-		String dbName="dbdbd";
-		String header = "jdbc:mysql://localhost:3306/";
-		String encoding = "useUnicode=true&characterEncoding=UTF-8";
-		String url = header + dbName + "?" + encoding;
+
+	public static void run(Connection conn) {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Connection myConn = null;
+	
 		Statement myState = null;
 		ResultSet myResSet = null;
 		PreparedStatement pstmt=null;
@@ -62,7 +57,7 @@ public class PivotAnalysis {
 			pstmt.setString(1, inputT);
 			myResSet=pstmt.executeQuery();
 			if (myResSet.next()) {
-                System.out.println("\n["+ inputT + "] 평점별 구매 금액 합계");
+                System.out.println("\n"+ inputT + "] 평점별 구매 금액 합계");
                 for (int i = 5; i >= 0; i--) {
                     int sum = myResSet.getInt("tot_" + i);
                     System.out.printf("평점 %d점: 합계 %d원%n", i, sum);
@@ -82,7 +77,7 @@ public class PivotAnalysis {
             try {
                 if (myResSet != null) myResSet.close();
                 if (pstmt != null) pstmt.close();
-                if (myConn != null) myConn.close();
+                
                 if(myState !=null) myState.close();
             } catch (SQLException e) {
                 e.printStackTrace();
