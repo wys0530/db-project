@@ -1,17 +1,12 @@
 package dbdbd.service;
 
 import java.sql.*;
-import java.util.Scanner;
 
 public class GameRevenueStats {
 
-    public void run(Connection conn) {
+    public static void run(Connection conn) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("유저 ID를 입력하세요: ");
-        int userId = scanner.nextInt();
 
         String sql = """
             SELECT g.title, 
@@ -21,15 +16,14 @@ public class GameRevenueStats {
                    OVER (PARTITION BY p.game_id ORDER BY p.purchase_price DESC) AS cumulative_revenue
             FROM purchase p
             JOIN game g ON p.game_id = g.game_id
-            WHERE p.user_id = ?;
+            WHERE p.user_id = 1;
         """;
 
         try {
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, userId);
             rs = pstmt.executeQuery();
 
-            System.out.println("\n[게임별 누적 판매 수익 (해당 유저의 구매 기준)]");
+            System.out.println("\n[게임별 누적 판매 수익 (user_id = 1 기준)]");
             System.out.println("----------------------------------------------------");
 
             boolean hasResult = false;
