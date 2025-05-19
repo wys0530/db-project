@@ -56,14 +56,10 @@ public class ReviewWrite {
 
          // 2. 리뷰 안 쓴 게임 목록 출력
          sql_games = """
-                  select game.game_id, title
-               from play_history inner join game
-               on play_history.game_id = game.game_id
-               left outer join review
-               on (play_history.user_id = review.user_id)
-               and (play_history.game_id= review.game_id)
-               where review_id is null and play_history.user_id=?;
-                  """;
+                     select user_id, game_id, title
+         		     from review_list
+         		     where review_id is null and user_id=?;
+                     """;
 
          pstmt = myConn.prepareStatement(sql_games);
          pstmt.setInt(1, userId);
