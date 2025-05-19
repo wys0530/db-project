@@ -21,8 +21,8 @@ public class PivotAnalysis {
 					select title
 					from game
 					""";
-			myConn=DriverManager.getConnection(url,userID,userPW);
-			myState =myConn.createStatement();
+			
+			myState =conn.createStatement();
 			myResSet=myState.executeQuery(sql_select);
 			
 			System.out.println("전체 게임 목록 : ");
@@ -53,14 +53,14 @@ public class PivotAnalysis {
 					left join review as r on r.user_id = p.user_id AND g.game_id=r.game_id
 					where g.title=?
 			""";
-			pstmt=myConn.prepareStatement(get_price);
+			pstmt=conn.prepareStatement(get_price);
 			pstmt.setString(1, inputT);
 			myResSet=pstmt.executeQuery();
 			if (myResSet.next()) {
-                System.out.println("\n"+ inputT + "] 평점별 구매 금액 합계");
-                for (int i = 5; i >= 0; i--) {
-                    int sum = myResSet.getInt("tot_" + i);
-                    System.out.printf("평점 %d점: 합계 %d원%n", i, sum);
+		                System.out.println("\n"+ inputT + "] 평점별 구매 금액 합계");
+		                for (int i = 5; i >= 0; i--) {
+		                    int sum = myResSet.getInt("tot_" + i);
+		                    System.out.printf("평점 %d점: 합계 %d원%n", i, sum);
                 }
             } else {
                 System.out.println("해당 게임에 대한 데이터가 존재하지 않습니다.");
