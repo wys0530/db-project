@@ -46,11 +46,12 @@ public class PurchaseStats {
             try {
                 if (rs != null) {
                     rs.close();
-                    System.out.println("... Close ResultSet ...");
                 }
                 if (stmt != null) {
                     stmt.close();
-                    System.out.println("... Close Statement ...");
+                }
+                if(conn != null) {
+                	conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -59,3 +60,5 @@ public class PurchaseStats {
     }
 		
 }
+
+

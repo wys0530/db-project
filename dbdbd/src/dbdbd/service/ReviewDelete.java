@@ -15,7 +15,7 @@ public class ReviewDelete {
 	    String sql_delete= "";
 		
 	    PreparedStatement pstmt = null;
-		ResultSet myResSet = null;
+		ResultSet rs = null;
 		
 		try {
 			// 1. 사용자 ID 입력
@@ -53,9 +53,14 @@ public class ReviewDelete {
         } finally {
             // 자원 해제
             try {
+            	if (rs != null) {
+                    rs.close();
+                }
                 if (pstmt != null) {
                     pstmt.close();
-                    System.out.println("... Close PreparedStatement ...");
+                }
+                if(conn != null) {
+                	conn.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
