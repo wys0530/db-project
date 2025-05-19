@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class UserTotalPurchase {
 
-    public void run(Connection conn) {
+    public static void run(Connection conn) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
