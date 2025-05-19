@@ -1,18 +1,16 @@
 package dbdbd.service;
-import java.util.Scanner;
+
 import java.sql.*;
+
+import java.util.Scanner;
+
 public class UserScoreReset {
-  	public static void main(String[] args) {
-		String userID="DBDBDuser";
-		String userPW="DBDBDpw";
-		String dbName="dbdbd";
-		String header = "jdbc:mysql://localhost:3306/";
-		String encoding = "useUnicode=true&characterEncoding=UTF-8";
-		String url = header + dbName + "?" + encoding;
+
+	public void run(Connection conn) {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Connection myConn = null;
+		
 		//Statement myState = null;
 		ResultSet myResSet = null;
 		PreparedStatement pstmt=null;
@@ -103,7 +101,7 @@ public class UserScoreReset {
             try {
                 if (myResSet != null) myResSet.close();
                 if (pstmt != null) pstmt.close();
-                if (myConn != null) myConn.close();
+                
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -112,7 +110,4 @@ public class UserScoreReset {
 
 	}
 	}
-}
-
-
 }
