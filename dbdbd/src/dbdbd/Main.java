@@ -28,6 +28,8 @@ public class Main {
 //            ReviewDelete.run();
 //            ReviewWrite.run();
 //            UserScoreReset.run();
+//            UserTotalPurchase.run();			
+//            GameRevenueStats.run();			
            
 
         } catch (Exception e) {
