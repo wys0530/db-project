@@ -55,8 +55,11 @@ public class UserScoreReset {
 			pstmt=conn.prepareStatement(sql_select);
 			pstmt.setInt(1, id);
 			myResSet=pstmt.executeQuery();
+			
+			boolean hasGame = false;
 			System.out.println("[휴면계정 의심 게임 목록]");
 			while(myResSet.next()) {
+				hasGame = true;
 				String title = myResSet.getString("title");
 				int playtime = myResSet.getInt("total_playtime");
 				Timestamp lastPlay = myResSet.getTimestamp("last_play");
@@ -66,6 +69,11 @@ public class UserScoreReset {
 				System.out.printf("제목: %s | 플레이타임: %d | 마지막 플레이: %s | 점수: %d%n",
 						title, playtime, lastPlay, score);
 				validTitles.add(title); // 제목 저장
+			}
+			
+			if (!hasGame) {
+				System.out.println("휴면계정 의심 게임이 없습니다.");
+				return; // 더 이상 진행하지 않음
 			}
 
 			//3. user_score를 초기화할 게임 선택  >> title 기준
