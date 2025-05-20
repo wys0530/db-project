@@ -28,7 +28,7 @@ public class Main {
 				System.out.println("[4] 휴면 계정 게임 점수 초기화");
 				System.out.println("[0] 종료");
 				System.out.println("=========================");
-				System.out.print("실행할 메뉴의 번호를 입력하세요: ");
+				System.out.print("▶ 실행할 메뉴의 번호를 입력하세요: ");
 
 				choice = scanner.nextInt();
 
@@ -39,22 +39,25 @@ public class Main {
 					System.out.println("[2] 최근 평균 가격 대비 저렴한 게임 조회");	//PurchaseStats
 					System.out.println("[3] 구매액 상위 유저 조회");				//UserTotalPurchase
 					System.out.println("-----------------------------");
-					System.out.print("실행할 메뉴의 번호를 입력하세요: ");
+					System.out.print("▶ 실행할 메뉴의 번호를 입력하세요: ");
 
 					choice = scanner.nextInt();
 
 					switch (choice) {
 					case 1:
+						System.out.println("  ▷ 각 게임에 대해 평점 별 구매 금액을 조회합니다.");
 						PivotAnalysis.run(conn);
 						break;
 					case 2:
+						System.out.println("  ▷ 2020년 이후의 게임들의 평균 가격을 보고, 최근 동향에 비해 저렴한 가격의 게임이 있는지 확인해보세요. ");
 						PurchaseStats.run(conn);
 						break;
 					case 3:
+						System.out.println("  ▷ 구매 금액이 10만원 이상인 유저들을 확인해보세요. ");
 						UserTotalPurchase.run(conn);
 						break;
 					default:
-						System.out.print("잘못된 입력입니다. 분석 기능 메뉴로 돌아갑니다.");
+						System.out.print("▶ 잘못된 입력입니다. 분석 기능 메뉴로 돌아갑니다.");
 					}
 
 					break;
@@ -63,36 +66,38 @@ public class Main {
 					System.out.println("[1] 리뷰 등록");						//ReviewWrite       
 					System.out.println("[2] 리뷰 삭제");						//ReviewDelete
 					System.out.println("----------------");
-					System.out.print("실행할 메뉴의 번호를 입력하세요: ");
+					System.out.print("▶ 실행할 메뉴의 번호를 입력하세요: ");
 
 					choice = scanner.nextInt();
 
 					switch (choice) {
 					case 1:
+						System.out.println("  ▷ 플레이한 게임 중 아직 리뷰를 작성하지 않은 게임의 리뷰를 작성합니다! ");
 						ReviewWrite.run(conn);
 						break;
 					case 2:
+						System.out.println("  ▷ 내가 작성한 리뷰를 삭제합니다. ");
 						ReviewDelete.run(conn);
 						break;
 					default:
-						System.out.println("잘못된 입력입니다. 리뷰 메뉴로 돌아갑니다.");
+						System.out.println("▶ 잘못된 입력입니다. 리뷰 메뉴로 돌아갑니다.");
 					}
 
 					break;
 				case 3:														//GameRevenusStats
-					System.out.println("게임의 품목별 누적 금액을 확인해보세요.\n ");
+					System.out.println("  ▷게임의 품목별 누적 금액을 확인해보세요. ");
 					GameRevenueStats.run(conn);
 					break;
 				case 4:														//UserScoreReset
-					System.out.println("마지막 플레이가 오래되었거나, 점수가 낮아 휴면 계정으로 의심되는 게임입니다.");
-					System.out.println("게임의 점수를 초기화 할 수 있습니다.\n");
+					System.out.println("  ▷ 마지막 플레이가 오래되었거나, 점수가 낮아 휴면 계정으로 의심되는 게임입니다.");
+					System.out.println("  ▷ 게임의 점수를 초기화 할 수 있습니다.\n");
 					UserScoreReset.run(conn);
 					break;
 				case 0:
-					System.out.println("\n애플리케이션을 종료합니다.");
+					System.out.println("\n▶ 애플리케이션을 종료합니다.");
 					break;
 				default:
-					System.out.println("~ 잘못된 입력입니다. 다시 입력해주세요. ~");
+					System.out.println("▶ 잘못된 입력입니다. 다시 입력해주세요.");
 				}
 				
 				System.out.println("\n_________________________________________________________________");
