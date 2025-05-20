@@ -89,7 +89,7 @@ public class Main {
 					GameRevenueStats.run(conn);
 					break;
 				case 4:														//UserScoreReset
-					System.out.println("  ▷ 마지막 플레이가 오래되었거나, 점수가 낮아 휴면 계정으로 의심되는 게임입니다.");
+					System.out.println("  ▷ 마지막 플레이가 오래되었거나, 플레이 시간이 적어 휴면 계정으로 의심되는 게임입니다.");
 					System.out.println("  ▷ 게임의 점수를 초기화 할 수 있습니다.\n");
 					UserScoreReset.run(conn);
 					break;
