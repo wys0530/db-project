@@ -8,11 +8,10 @@ public class ReviewDelete {
 	public static void run(Connection conn) {
 		Scanner scanner = new Scanner(System.in);
 
-		String username="";
-
 		int userId=0;
 		String title="";
-		String sql_delete= "";
+		String sql_select="";
+		String sql_delete="";
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -21,13 +20,46 @@ public class ReviewDelete {
 			// 1. 사용자 ID 입력
 			System.out.print("\n리뷰를 삭제할 사용자 ID를 입력하세요: ");
 			userId = scanner.nextInt();
-			scanner.nextLine(); // 개행 문자 제거
+			scanner.nextLine(); 
 
-			// 2. 삭제할 게임명 입력
-			System.out.print("삭제할 리뷰의 게임 제목을 입력하세요: ");
-			title = scanner.nextLine();
+			// 2. 해당 사용자의 리뷰 목록 출력
+            sql_select = """
+            	    select r.review_id, g.title
+            	    from review r
+            	    inner join game g on r.game_id = g.game_id
+            	    where r.review_id is not null and r.user_id = ?
+            	""";
 
-			// 3. DELETE 쿼리 준비
+            
+            pstmt = conn.prepareStatement(sql_select);
+            pstmt.setInt(1, userId);
+            rs = pstmt.executeQuery();
+
+			System.out.println("\n해당 사용자가 작성한 리뷰 목록:");
+            System.out.println("=====================================");
+            boolean hasReview = false;
+            while (rs.next()) {
+                int reviewId = rs.getInt("review_id");
+                String gameTitle = rs.getString("title");
+
+                System.out.println("리뷰 ID: " + reviewId);
+                System.out.println("게임명: " + gameTitle);
+                System.out.println("=====================================");
+                hasReview = true;
+            }
+            rs.close(); 
+            pstmt.close();
+            
+            if (!hasReview) {
+                System.out.println("해당 사용자가 작성한 리뷰가 없습니다.");
+                return;
+            }
+            
+            // 3. 삭제할 게임명 입력
+         	System.out.print("삭제할 리뷰의 게임 제목을 입력하세요: ");
+         	title = scanner.nextLine();
+            
+			// 4. DELETE 쿼리 준비
 			sql_delete = """
 					delete review
 					from review
@@ -39,7 +71,7 @@ public class ReviewDelete {
 			pstmt.setInt(1, userId);
 			pstmt.setString(2, title);
 
-			// 4. 실행 및 결과 처리
+			// 5. 실행 및 결과 처리
 			int result = pstmt.executeUpdate();
 			if (result > 0) {
 				System.out.println(result + "개의 리뷰가 삭제되었습니다.");
