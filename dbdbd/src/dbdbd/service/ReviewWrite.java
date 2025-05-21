@@ -17,7 +17,7 @@ public class ReviewWrite {
 
 		String sql_select = "";
 		String sql_insert = "";
-		String sql_finduser="";
+		String sql_findusername="";
 		String sql_games="";
 
 		PreparedStatement pstmt = null;
@@ -26,30 +26,49 @@ public class ReviewWrite {
 		Scanner scanner = new Scanner(System.in);   
 
 		try {
-			// 1. 사용자 이름 입력 → user_id 조회
-			System.out.print("\n사용자 이름을 입력하세요: ");
-			username = scanner.nextLine();
 
-			sql_finduser = "SELECT user_id, username FROM users WHERE username = ?";
-			pstmt = myConn.prepareStatement(sql_finduser);
-			pstmt.setString(1, username);
-			myResSet = pstmt.executeQuery();
+			try {
+				// 1. 사용자 id로 이름 조회 및 출력
+				System.out.print("\n사용자 id를 입력하세요: ");
+				userId = scanner.nextInt();
 
-			boolean hasResult= false;
-			System.out.println("\n=====================================");
-			while (myResSet.next()) {
-				userId = myResSet.getInt("user_id");
-				System.out.println("- " + username + " (user_id: " + userId + ")");
-				hasResult = true;
+				sql_findusername = "SELECT username FROM users WHERE user_id = ?";
+				pstmt = myConn.prepareStatement(sql_findusername);
+				pstmt.setInt(1, userId);
+				myResSet = pstmt.executeQuery();
+
+				if (myResSet.next()) {
+					username = myResSet.getString("username");
+					System.out.println("\n안녕하세요, '" + username + "'님");
+				} 
+				else {
+					System.out.println("해당 ID의 사용자가 존재하지 않습니다.");
+					return; // 중단
+				}
+
+
 			}
-			System.out.println("=====================================");
-			System.out.print("-> 다음 사용자 목록 중 본인의 user_id를 입력하세요: ");
-			userId = scanner.nextInt();
-
-			if(!hasResult){
-				System.out.println("해당 사용자가 존재하지 않습니다.");
+			catch (SQLException e) {
+				System.err.println("사용자 이름 조회 중 오류 발생:");
+				e.printStackTrace();
 				return;
 			}
+
+			//			boolean hasResult= false;
+			//			System.out.println("\n=====================================");
+			//			while (myResSet.next()) {
+			//				userId = myResSet.getInt("user_id");
+			//				System.out.println("- " + username + " (user_id: " + userId + ")");
+			//				hasResult = true;
+			//			}
+			//			System.out.println("=====================================");
+			//			System.out.print("-> 다음 사용자 목록 중 본인의 user_id를 입력하세요: ");
+			//			userId = scanner.nextInt();
+			//
+			//			if(!hasResult){
+			//				System.out.println("해당 사용자가 존재하지 않습니다.");
+			//				return;
+			//			}
 
 			myResSet.close();
 			pstmt.close();
@@ -65,6 +84,7 @@ public class ReviewWrite {
 			pstmt.setInt(1, userId);
 			myResSet = pstmt.executeQuery();
 
+			boolean hasResult=false;
 			System.out.println("\n\n==== [아직 리뷰가 작성되지 않은 게임 목록] ====\n");
 			hasResult = false;
 			while (myResSet.next()) {
@@ -84,7 +104,7 @@ public class ReviewWrite {
 
 			// 3. game_id 및 점수 입력
 			System.out.println("\n=====================================");
-			System.out.print("\n-> 리뷰를 작성할 game_id를 입력하세요: ");
+			System.out.print("\n-> 위 목록 중 리뷰를 작성할 game_id를 입력하세요: ");
 			gameId = scanner.nextInt();
 
 			System.out.print("시청각 점수 (0~5): ");
