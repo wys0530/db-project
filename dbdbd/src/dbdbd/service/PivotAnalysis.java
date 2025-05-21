@@ -57,7 +57,7 @@ public class PivotAnalysis {
 			pstmt.setString(1, inputT);
 			myResSet=pstmt.executeQuery();
 			if (myResSet.next()) {
-				System.out.println("\n"+ inputT + "] 평점별 구매 금액 합계");
+				System.out.println("\n"+ "["+ inputT + "] 평점별 구매 금액 합계");
 				for (int i = 5; i >= 0; i--) {
 					int sum = myResSet.getInt("tot_" + i);
 					System.out.printf("평점 %d점: 합계 %d원%n", i, sum);

@@ -22,24 +22,33 @@ public class UserScoreReset {
 			//1. 사용자 로그인
 
 			System.out.print("\n당신의 user_id를 입력하세요 :");
-			int id=sc.nextInt();
+			int userId=sc.nextInt();
 			sc.nextLine();
-			String sqlFindID="""
-					select * 
-					from users 
-					where user_id=?
-					""";
-			pstmt=conn.prepareStatement(sqlFindID);
-			pstmt.setInt(1, id);
-			myResSet=pstmt.executeQuery();
-			if(myResSet.next()) {
-				System.out.println("안녕하세요"+id+"님 로그인되셨습니다.\n");
-			}
-			else {
-				System.out.println("해당 user_id는 존재하지 않습니다.\n");
-			}
-			myResSet.close();
-			pstmt.close();
+			
+			String userNameSql = "SELECT username FROM users WHERE user_id = ?";
+
+	        try {
+	            pstmt = conn.prepareStatement(userNameSql);
+	            pstmt.setInt(1, userId);
+	            myResSet = pstmt.executeQuery();
+
+	            if (myResSet.next()) {
+	                String username = myResSet.getString("username");
+	                System.out.println("\n안녕하세요, '" + username + "'님");
+	            } 
+	            else {
+	                System.out.println("해당 ID의 사용자가 존재하지 않습니다.");
+	                return; // 중단
+	            }
+
+	            myResSet.close();
+	            pstmt.close();
+	        } 
+	        catch (SQLException e) {
+	            System.err.println("사용자 이름 조회 중 오류 발생:");
+	            e.printStackTrace();
+	            return;
+	        }
 
 
 
@@ -53,11 +62,11 @@ public class UserScoreReset {
 					""";
 			
 			pstmt=conn.prepareStatement(sql_select);
-			pstmt.setInt(1, id);
+			pstmt.setInt(1, userId);
 			myResSet=pstmt.executeQuery();
 			
 			boolean hasGame = false;
-			System.out.println("[휴면계정 의심 게임 목록]");
+			System.out.println("\n[휴면계정 의심 게임 목록]");
 			while(myResSet.next()) {
 				hasGame = true;
 				String title = myResSet.getString("title");
@@ -93,7 +102,7 @@ public class UserScoreReset {
 					   	AND game_id = (SELECT game_id FROM game WHERE title = ?)
 					""";
 			PreparedStatement updatepstmt=conn.prepareStatement(sql_update);
-			updatepstmt.setInt(1, id);
+			updatepstmt.setInt(1, userId);
 			updatepstmt.setString(2, selectedT);
 			int a=updatepstmt.executeUpdate();
 

@@ -17,6 +17,31 @@ public class GameRevenueStats {
 		System.out.print("\n금액을 조회할 사용자 ID를 입력하세요: ");
 		int userId = scanner.nextInt();
 		scanner.nextLine();
+		
+		String userNameSql = "SELECT username FROM users WHERE user_id = ?";
+
+        try {
+            pstmt = conn.prepareStatement(userNameSql);
+            pstmt.setInt(1, userId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String username = rs.getString("username");
+                System.out.println("\n안녕하세요, '" + username + "'님");
+            } 
+            else {
+                System.out.println("해당 ID의 사용자가 존재하지 않습니다.");
+                return; // 중단
+            }
+
+            rs.close();
+            pstmt.close();
+        } 
+        catch (SQLException e) {
+            System.err.println("사용자 이름 조회 중 오류 발생:");
+            e.printStackTrace();
+            return;
+        }
 
 		String sql = """
 				    SELECT g.title, 
