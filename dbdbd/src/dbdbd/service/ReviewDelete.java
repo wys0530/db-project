@@ -21,6 +21,31 @@ public class ReviewDelete {
 			System.out.print("\n리뷰를 삭제할 사용자 ID를 입력하세요: ");
 			userId = scanner.nextInt();
 			scanner.nextLine(); 
+			
+			String userNameSql = "SELECT username FROM users WHERE user_id = ?";
+
+	        try {
+	            pstmt = conn.prepareStatement(userNameSql);
+	            pstmt.setInt(1, userId);
+	            rs = pstmt.executeQuery();
+
+	            if (rs.next()) {
+	                String username = rs.getString("username");
+	                System.out.println("\n안녕하세요, '" + username + "'님");
+	            } 
+	            else {
+	                System.out.println("해당 ID의 사용자가 존재하지 않습니다.");
+	                return; // 중단
+	            }
+
+	            rs.close();
+	            pstmt.close();
+	        } 
+	        catch (SQLException e) {
+	            System.err.println("사용자 이름 조회 중 오류 발생:");
+	            e.printStackTrace();
+	            return;
+	        }
 
 			// 2. 해당 사용자의 리뷰 목록 출력
             sql_select = """
